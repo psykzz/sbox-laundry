@@ -6,7 +6,7 @@
     "Name": "laundry_basket",
     "Position": "0,0,0",
     "Rotation": "0,0,0,1",
-    "Scale": "4.700585,4.700585,4.700585",
+    "Scale": "4,4,4",
     "Tags": "",
     "Enabled": true,
     "NetworkMode": 2,
@@ -127,7 +127,27 @@
         "SurfaceVelocity": "0,0,0"
       }
     ],
-    "Children": []
+    "Children": [],
+    "__properties": {
+      "NetworkInterpolation": true,
+      "TimeScale": 1,
+      "WantsSystemScene": true,
+      "Metadata": {},
+      "NavMesh": {
+        "Enabled": false,
+        "IncludeStaticBodies": true,
+        "IncludeKeyframedBodies": true,
+        "EditorAutoUpdate": false,
+        "AgentHeight": 64,
+        "AgentRadius": 16,
+        "AgentStepSize": 18,
+        "AgentMaxSlope": 40,
+        "ExcludedBodies": "",
+        "IncludedBodies": "",
+        "CustomBounds": false
+      }
+    },
+    "__variables": []
   },
   "ResourceVersion": 2,
   "ShowInMenu": false,
