@@ -1,8 +1,8 @@
 {
-  "Title": "Definitely not a cleanup game",
+  "Title": "Laundry",
   "Type": "game",
   "Org": "bestintentions",
-  "Ident": "cleanup",
+  "Ident": "laundry",
   "Schema": 1,
   "IncludeSourceFiles": false,
   "Resources": null,
