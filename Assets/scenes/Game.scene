@@ -1083,46 +1083,6 @@
         }
       ],
       "Children": []
-    },
-    {
-      "__guid": "818c1f3e-3c59-4b19-8252-80d7828210e7",
-      "__version": 2,
-      "Flags": 0,
-      "Name": "jumpsuit_a",
-      "Position": "-394.3908,350.7391,3.640575",
-      "Rotation": "0,0,0,1",
-      "Scale": "1,1,1",
-      "Tags": "",
-      "Enabled": true,
-      "NetworkMode": 2,
-      "NetworkFlags": 0,
-      "NetworkOrphaned": 0,
-      "NetworkTransmit": true,
-      "OwnerTransfer": 1,
-      "Components": [
-        {
-          "__type": "Sandbox.Prop",
-          "__guid": "58f899d6-cc3b-408f-b474-7c4ded1f57d0",
-          "__enabled": true,
-          "Flags": 0,
-          "BodyGroups": 18446744073709551615,
-          "Health": 0,
-          "IsStatic": false,
-          "MaterialGroup": null,
-          "Model": "models/clothing/protagonist/jumpsuit/jumpsuit_a.vmdl",
-          "OnComponentDestroy": null,
-          "OnComponentDisabled": null,
-          "OnComponentEnabled": null,
-          "OnComponentFixedUpdate": null,
-          "OnComponentStart": null,
-          "OnComponentUpdate": null,
-          "OnPropBreak": null,
-          "OnPropTakeDamage": null,
-          "StartAsleep": false,
-          "Tint": "1,1,1,1"
-        }
-      ],
-      "Children": []
     }
   ],
   "SceneProperties": {
@@ -1153,8 +1113,7 @@
   "Title": null,
   "Description": null,
   "__references": [
-    "facepunch.washingmachine#143526",
-    "jammie.jumpsuita#113960"
+    "facepunch.washingmachine#143526"
   ],
   "__version": 3
 }
