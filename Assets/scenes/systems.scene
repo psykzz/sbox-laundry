@@ -28,7 +28,15 @@
           "OnComponentEnabled": null,
           "OnComponentFixedUpdate": null,
           "OnComponentStart": null,
-          "OnComponentUpdate": null
+          "OnComponentUpdate": null,
+          "TshirtColours": [
+            "1000,372.093,372.093,1",
+            "1000,1000,372.09,1",
+            "372.09,1000,372.09,1",
+            "372.09,1000,1000,1",
+            "0,0,0,1",
+            "1,1,1,1"
+          ]
         }
       ],
       "Children": []
@@ -58,7 +66,7 @@
       },
       "Sandbox.Clutter.ClutterGridSystem": {
         "Storage": {
-          "$blob": "b5b3e912-faee-421e-a51e-90ca7f36fe31"
+          "$blob": "a7ababa2-eb81-499d-a9de-5a4b652b1645"
         }
       }
     }

@@ -48,8 +48,29 @@
                       "Type": "GameObject",
                       "IdValue": "3126c9d1-46d1-499d-9be8-cc201369c96a"
                     },
+                    "Property": "Name",
+                    "Value": "spawner"
+                  },
+                  {
+                    "Target": {
+                      "Type": "GameObject",
+                      "IdValue": "3126c9d1-46d1-499d-9be8-cc201369c96a"
+                    },
                     "Property": "Position",
                     "Value": "243.3757,0,288.442"
+                  },
+                  {
+                    "Target": {
+                      "Type": "Component",
+                      "IdValue": "5d4cefb4-36c3-4afd-8760-d49278fd3c19"
+                    },
+                    "Property": "ItemsToSpawn",
+                    "Value": [
+                      {
+                        "_type": "gameobject",
+                        "prefab": "prefabs/laundry_tshirt.prefab"
+                      }
+                    ]
                   }
                 ],
                 "MovedObjects": []
@@ -1106,6 +1127,11 @@
     "GameObjectSystems": {
       "Sandbox.MovieMaker.MovieRecorderSystem": {
         "DisableClientRecording": false
+      },
+      "Sandbox.Clutter.ClutterGridSystem": {
+        "Storage": {
+          "$blob": "5d18095a-ae72-4e4b-9926-bf5bef327e1d"
+        }
       }
     }
   },

@@ -31,8 +31,7 @@ public sealed class Spawner : Component
 		{
 			var spawnPosition = GetRandomSpawnPoint();
 			var itemToSpawn = Random.Shared.FromArray( ItemsToSpawn, default );
-			var spawned = itemToSpawn.Clone( spawnPosition );
-			spawned.NetworkSpawn();
+			var spawned = GameSystem.Instance.SpawnShirt( itemToSpawn, spawnPosition, Rotation.Random );
 
 			// TODO: Not sure if we want to keep this or not.
 			// spawned.SetParent( GameObject );

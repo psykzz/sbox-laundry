@@ -9,10 +9,23 @@ public sealed class GameSystem : Component
 	[Property]
 	public int Money { get; private set; } = 0;
 
+	[Property]
+	public List<Color> TshirtColours { get; set; }
+
+	private List<GameObject> _tshirts = new();
+
 
 	protected override void OnStart()
 	{
 		Instance = this;
+	}
+
+	public Sandbox.GameObject SpawnShirt( GameObject prefab, Vector3 position, Rotation rotation )
+	{
+		var spawned = prefab.Clone( position, rotation );
+		spawned.NetworkSpawn();
+		spawned.GetComponent<ModelRenderer>()?.Tint = System.Random.Shared.FromList( TshirtColours, default );
+		return spawned;
 	}
 
 	public bool PurchaseGib()
