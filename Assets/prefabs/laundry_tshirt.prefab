@@ -136,24 +136,29 @@
         "OnComponentUpdate": null
       },
       {
-        "__type": "Sandbox.HighlightOutline",
-        "__guid": "6761658d-0af1-45f7-8d5a-427d0b146076",
-        "__enabled": false,
+        "__type": "Washable",
+        "__guid": "98bcb678-3f06-410b-bb54-d8b3de5bced3",
+        "__enabled": true,
         "Flags": 0,
-        "Color": "1,1,1,1",
-        "InsideColor": "0,0,0,0",
-        "InsideObscuredColor": "0,0,0,0",
-        "Material": null,
-        "ObscuredColor": "0,0,0,0.4",
+        "Dirtiness": 0,
         "OnComponentDestroy": null,
         "OnComponentDisabled": null,
         "OnComponentEnabled": null,
         "OnComponentFixedUpdate": null,
         "OnComponentStart": null,
-        "OnComponentUpdate": null,
-        "OverrideTargets": false,
-        "Targets": null,
-        "Width": 0.25
+        "OnComponentUpdate": null
+      },
+      {
+        "__type": "InteractionHint",
+        "__guid": "4daedceb-31f1-4a0e-a51c-bdf09ac2b2fc",
+        "__enabled": true,
+        "Flags": 0,
+        "OnComponentDestroy": null,
+        "OnComponentDisabled": null,
+        "OnComponentEnabled": null,
+        "OnComponentFixedUpdate": null,
+        "OnComponentStart": null,
+        "OnComponentUpdate": null
       }
     ],
     "Children": [],

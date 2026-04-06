@@ -76,7 +76,8 @@ public sealed class PlayerPickupController : Component
 
 	private void HighlightBestPickupCandidate()
 	{
-		FindBestPickupCandidate()?.Highlight( 0.1f );
+		var candidate = FindBestPickupCandidate();
+		candidate?.GameObject.GetComponent<InteractionHint>()?.Highlight( 0.1f );
 	}
 
 	private void TryPickUp()
@@ -127,7 +128,7 @@ public sealed class PlayerPickupController : Component
 		if ( !trace.Hit || trace.GameObject is null )
 			return null;
 
-		return trace.GameObject.Components.Get<PickupItem>();
+		return trace.GameObject.GetComponent<PickupItem>();
 	}
 
 	private PickupItem NearestToSphere()

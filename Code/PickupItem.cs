@@ -6,9 +6,7 @@ public sealed class PickupItem : Component
 	public bool DisablePhysicsWhileHeld { get; set; } = true;
 	private GameObject beingHeldBy;
 	private Rigidbody rigidbody;
-	private HighlightOutline highlightOutline;
 	private GameObject originalParent;
-	private DebounceTimer _debouncer = new();
 
 	#region Component Lifecycle
 	protected override void OnStart()
@@ -17,17 +15,10 @@ public sealed class PickupItem : Component
 		if ( rigidbody is null )
 			Log.Warning( $"PickupItem '{GameObject.Name}' does not have a Rigidbody component in its hierarchy. Pickup physics will not work." );
 
-		highlightOutline = GameObject.Components.Get<HighlightOutline>( FindMode.InSelf | FindMode.InAncestors );
-		if ( highlightOutline is null )
-			Log.Warning( $"PickupItem '{GameObject.Name}' does not have a HighlightOutline component in its hierarchy. Highlighting will not work." );
 
 		originalParent = GameObject.Parent;
 	}
 
-	protected override void OnUpdate()
-	{
-		_debouncer.Tick();
-	}
 	#endregion
 
 	#region Public API
@@ -42,12 +33,14 @@ public sealed class PickupItem : Component
 		beingHeldBy = parent;
 		GameObject.SetParent( parent );
 		SetPhysicsHeldState( true );
-		Highlight( 0.5f );
 		return true;
 	}
 
 	public void Drop()
 	{
+		if ( beingHeldBy is null )
+			return;
+
 		beingHeldBy = null;
 		var previousVelocity = rigidbody?.Velocity;
 		GameObject.SetParent( originalParent );
@@ -68,13 +61,7 @@ public sealed class PickupItem : Component
 		return beingHeldBy == obj;
 	}
 
-	public void Highlight( float delay = 5f )
-	{
-		if ( highlightOutline is null )
-			return;
-		highlightOutline.Enabled = true;
-		_debouncer.Run( "highlight", delay, () => highlightOutline.Enabled = false );
-	}
+
 
 	#endregion
 

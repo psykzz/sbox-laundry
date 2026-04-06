@@ -24,7 +24,7 @@ public sealed class GameSystem : Component
 	{
 		var spawned = prefab.Clone( position, rotation );
 		spawned.NetworkSpawn();
-		spawned.GetComponent<ModelRenderer>()?.Tint = System.Random.Shared.FromList( TshirtColours, default );
+		spawned.GetComponent<Prop>()?.Tint = System.Random.Shared.FromList( TshirtColours, default );
 		return spawned;
 	}
 
