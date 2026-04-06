@@ -1074,12 +1074,14 @@
           "__enabled": true,
           "Flags": 0,
           "Clothing": [],
+          "MaxClothingItems": 5,
           "OnComponentDestroy": null,
           "OnComponentDisabled": null,
           "OnComponentEnabled": null,
           "OnComponentFixedUpdate": null,
           "OnComponentStart": null,
           "OnComponentUpdate": null,
+          "ShakeAmount": 1,
           "StartWashButton": {
             "_type": "gameobject",
             "go": "d5e1514f-6c4b-4069-a2cc-848048293953"
@@ -1089,6 +1091,13 @@
             "component_id": "9a376c22-b16c-4ddd-b3d0-3ecaf5584245",
             "go": "3ac880ba-bd33-4c40-a3c4-367fbc8e98c8",
             "component_type": "BoxCollider"
+          },
+          "WashingDuration": 10,
+          "WashingSound": {
+            "_type": "component",
+            "component_id": "d1ce0fa4-a2c9-403a-8622-1ece359a1c64",
+            "go": "3ac880ba-bd33-4c40-a3c4-367fbc8e98c8",
+            "component_type": "SoundPointComponent"
           }
         },
         {
@@ -1116,6 +1125,56 @@
           "Static": false,
           "Surface": null,
           "SurfaceVelocity": "0,0,0"
+        },
+        {
+          "__type": "Sandbox.SoundPointComponent",
+          "__guid": "d1ce0fa4-a2c9-403a-8622-1ece359a1c64",
+          "__enabled": true,
+          "Flags": 0,
+          "Distance": 5000,
+          "DistanceAttenuation": true,
+          "DistanceAttenuationOverride": false,
+          "Falloff": [
+            {
+              "x": 0,
+              "y": 1,
+              "in": 3.1415927,
+              "out": -3.1415927,
+              "mode": "Mirrored"
+            },
+            {
+              "x": 1,
+              "y": 0,
+              "in": 0,
+              "out": 0,
+              "mode": "Mirrored"
+            }
+          ],
+          "Force2d": false,
+          "MaxRepeatTime": 1,
+          "MinRepeatTime": 1,
+          "Occlusion": false,
+          "OcclusionOverride": false,
+          "OcclusionRadius": 32,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "Pitch": 1,
+          "PlayOnStart": false,
+          "ReflectionOverride": false,
+          "Reflections": false,
+          "Repeat": false,
+          "SoundEvent": "sounds/electric_loop.sound",
+          "SoundOverride": false,
+          "StopOnNew": false,
+          "TargetMixer": {
+            "Name": "game",
+            "Id": "9e83cc01-7bd5-4f9c-9664-b2d9aeb16dc2"
+          },
+          "Volume": 1
         }
       ],
       "Children": [
@@ -1233,13 +1292,13 @@
       "CustomBounds": false
     },
     "GameObjectSystems": {
-      "Sandbox.MovieMaker.MovieRecorderSystem": {
-        "DisableClientRecording": false
-      },
       "Sandbox.Clutter.ClutterGridSystem": {
         "Storage": {
-          "$blob": "9aafda8d-0562-493c-a3d5-da6bf92868b2"
+          "$blob": "3a65f40a-e2df-4b3e-8620-f80af54b8879"
         }
+      },
+      "Sandbox.MovieMaker.MovieRecorderSystem": {
+        "DisableClientRecording": false
       }
     }
   },
@@ -1247,6 +1306,7 @@
   "Title": null,
   "Description": null,
   "__references": [
+    "exorealms.76fccc8db731288a#41169",
     "facepunch.greenbutton#130324",
     "facepunch.washingmachine#143526"
   ],
