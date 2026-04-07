@@ -35,12 +35,12 @@ public sealed class PlayerInteractionController : Component
 		if ( _heldItem is null )
 		{
 			var usable = RaycastForUsable();
-			var canInteract = usable?.GameObject.GetComponent<Usable>()?.CanInteractCheck( GameObject ) ?? true;
-			if ( canInteract )
-				usable?.GameObject.GetComponent<InteractionHint>()?.Highlight( 0.1f );
-			// usable?.GameObject.GetComponent<InteractionHint>()?.Highlight( 0.1f );
-			if ( usable is not null && Input.Pressed( usable.Action ) )
-				TryInteract( usable );
+			if ( usable is not null && usable.CanInteractWith( GameObject ) )
+			{
+				usable.GameObject.GetComponent<InteractionHint>()?.Highlight( 0.1f );
+				if ( Input.Pressed( usable.Action ) )
+					TryInteract( usable );
+			}
 		}
 	}
 
