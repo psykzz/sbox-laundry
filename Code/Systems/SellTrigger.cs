@@ -24,7 +24,7 @@ public sealed class SellTrigger : Component, Component.ITriggerListener
 			return;
 
 		pickupItem.Drop();
-		pickupItem.GameObject.Destroy();
 		GameSystem.Instance.SellGib( pickupItem.GameObject );
+		pickupItem.GameObject.Destroy();
 	}
 }

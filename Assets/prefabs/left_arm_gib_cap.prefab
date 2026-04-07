@@ -123,19 +123,6 @@
         "StartAsleep": false
       },
       {
-        "__type": "PickupItem",
-        "__guid": "856ddeaa-0f3b-42d1-a1f9-a8aeb929ee93",
-        "__enabled": true,
-        "Flags": 0,
-        "DisablePhysicsWhileHeld": true,
-        "OnComponentDestroy": null,
-        "OnComponentDisabled": null,
-        "OnComponentEnabled": null,
-        "OnComponentFixedUpdate": null,
-        "OnComponentStart": null,
-        "OnComponentUpdate": null
-      },
-      {
         "__type": "Sandbox.HighlightOutline",
         "__guid": "ae399374-eedf-454d-95d2-213c6096ec08",
         "__enabled": false,
@@ -154,6 +141,19 @@
         "OverrideTargets": false,
         "Targets": [],
         "Width": 0.25
+      },
+      {
+        "__type": "PickupItem",
+        "__guid": "b9eca8cc-0829-49c1-9146-beeb88d4aea3",
+        "__enabled": true,
+        "Flags": 0,
+        "DisablePhysicsWhileHeld": true,
+        "OnComponentDestroy": null,
+        "OnComponentDisabled": null,
+        "OnComponentEnabled": null,
+        "OnComponentFixedUpdate": null,
+        "OnComponentStart": null,
+        "OnComponentUpdate": null
       }
     ],
     "Children": [],

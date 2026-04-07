@@ -35,8 +35,4 @@ public sealed class Washable : Component
 		}
 	}
 
-	protected override void OnUpdate()
-	{
-
-	}
 }

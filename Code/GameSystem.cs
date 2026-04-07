@@ -40,7 +40,7 @@ public sealed class GameSystem : Component
 
 	private void SpawnGib()
 	{
-		throw new NotImplementedException();
+		Log.Warning( "SpawnGib is not yet implemented." );
 	}
 
 	public bool SellGib( GameObject gib )

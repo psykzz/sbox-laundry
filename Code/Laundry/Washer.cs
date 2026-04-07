@@ -61,7 +61,6 @@ public sealed class Washer : Component, Component.ICollisionListener
 		Clothing.Add( clothing );
 		clothing.WorldPosition = WashingArea.WorldPosition + Vector3.Up * -10f;
 		clothing.GetComponent<Prop>()?.Enabled = false;
-		_finishWash = WashingDuration; // Start washing timer
 		return true;
 	}
 

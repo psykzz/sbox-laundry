@@ -89,18 +89,6 @@
         "SurfaceVelocity": "0,0,0"
       },
       {
-        "__type": "SellTrigger",
-        "__guid": "76361c8c-3a8b-4fc1-8747-0401a500087d",
-        "__enabled": true,
-        "Flags": 0,
-        "OnComponentDestroy": null,
-        "OnComponentDisabled": null,
-        "OnComponentEnabled": null,
-        "OnComponentFixedUpdate": null,
-        "OnComponentStart": null,
-        "OnComponentUpdate": null
-      },
-      {
         "__type": "Sandbox.BoxCollider",
         "__guid": "7d2629ec-4ee1-4e3d-9ffd-a4b5c6fd1d8f",
         "__enabled": true,
@@ -125,6 +113,18 @@
         "Static": false,
         "Surface": null,
         "SurfaceVelocity": "0,0,0"
+      },
+      {
+        "__type": "SellTrigger",
+        "__guid": "7103a010-0e27-46cf-9f0d-0217708ecfab",
+        "__enabled": true,
+        "Flags": 0,
+        "OnComponentDestroy": null,
+        "OnComponentDisabled": null,
+        "OnComponentEnabled": null,
+        "OnComponentFixedUpdate": null,
+        "OnComponentStart": null,
+        "OnComponentUpdate": null
       }
     ],
     "Children": [],

@@ -124,7 +124,7 @@
       },
       {
         "__type": "PickupItem",
-        "__guid": "572de712-456e-48c3-a9da-7744a1e9e9ab",
+        "__guid": "65e28ef9-22c7-401e-9c51-4ad498521924",
         "__enabled": true,
         "Flags": 0,
         "DisablePhysicsWhileHeld": true,
@@ -137,7 +137,7 @@
       },
       {
         "__type": "Washable",
-        "__guid": "98bcb678-3f06-410b-bb54-d8b3de5bced3",
+        "__guid": "b131ec53-9698-4713-9bf9-e1f4c0fd4a41",
         "__enabled": true,
         "Flags": 0,
         "Dirtiness": 0,
@@ -150,7 +150,7 @@
       },
       {
         "__type": "InteractionHint",
-        "__guid": "4daedceb-31f1-4a0e-a51c-bdf09ac2b2fc",
+        "__guid": "e2ebc6e4-32d9-42ab-823a-f7adfcb262f0",
         "__enabled": true,
         "Flags": 0,
         "OnComponentDestroy": null,

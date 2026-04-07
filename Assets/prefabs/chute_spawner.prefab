@@ -3,7 +3,7 @@
     "__guid": "3126c9d1-46d1-499d-9be8-cc201369c96a",
     "__version": 2,
     "Flags": 0,
-    "Name": "gib_spawner",
+    "Name": "chute_spawner",
     "Position": "0,0,10.73833",
     "Rotation": "0,0,0,1",
     "Scale": "1,1,1",
@@ -23,7 +23,7 @@
         "ItemsToSpawn": [
           {
             "_type": "gameobject",
-            "prefab": "prefabs/left_arm_gib_cap.prefab"
+            "prefab": "prefabs/laundry_tshirt.prefab"
           }
         ],
         "OnComponentDestroy": null,

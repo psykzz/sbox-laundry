@@ -18,21 +18,29 @@ public sealed class PlayerPickupController : Component
 
 
 	private PickupItem heldItem;
+	private CameraComponent _camera;
+
+	protected override void OnStart()
+	{
+		_camera = GetComponentInParent<CameraComponent>();
+		if ( _camera is null )
+			Log.Error( "PlayerPickupController requires a CameraComponent in its parent hierarchy." );
+	}
 
 	protected override void OnUpdate()
 	{
-
-		UpdateHeldItemTransform();
+		if ( heldItem?.GameObject is null )
+			heldItem = null;
 
 		if ( heldItem is null )
 			HighlightBestPickupCandidate();
 
 		TryHoldItem();
+		TryPunch();
 	}
 
 	private void TryHoldItem()
 	{
-
 		if ( Input.Pressed( PickupAction ) && heldItem is null )
 		{
 			TryPickUp();
@@ -44,26 +52,22 @@ public sealed class PlayerPickupController : Component
 		}
 	}
 
-	private CameraComponent GetCamera()
+	private void TryPunch()
 	{
-		var camera = GetComponentInParent<CameraComponent>();
-		if ( camera is null )
-		{
-			Log.Error( "PlayerPickupController requires a CameraComponent in its parent hierarchy." );
-			return null;
-		}
-		return camera;
+		if ( !Input.Pressed( PunchAction ) || heldItem is null || _camera is null )
+			return;
+
+		heldItem.Throw( _camera.WorldRotation.Forward * PunchAmount * 100f );
+		heldItem = null;
 	}
 
 	protected override void DrawGizmos()
 	{
-
-		var camera = GetCamera();
-		if ( camera is null )
+		if ( _camera is null )
 			return;
 
-		var worldStart = camera.WorldPosition;
-		var worldEnd = worldStart + camera.WorldRotation.Forward * 250f;
+		var worldStart = _camera.WorldPosition;
+		var worldEnd = worldStart + _camera.WorldRotation.Forward * 250f;
 
 		// Convert to local space so the gizmo lines up with the object's transform
 		var localStart = Transform.World.PointToLocal( worldStart );
@@ -90,40 +94,17 @@ public sealed class PlayerPickupController : Component
 			return;
 
 		heldItem = pickupItem;
-		// AttachHeldItem();
-	}
-
-	private PickupItem SlowClosestPickup()
-	{
-
-		var items = Scene.GetAllComponents<PickupItem>();
-		var item = items.Where( item => item.GameObject is not null )
-					.Where( item => !IsOwnedByPlayer( item ) )
-					.Select( item => new
-					{
-						Item = item,
-						DistanceSquared = (item.WorldPosition - GetPickupCenterWorld()).LengthSquared
-					} )
-					// .Where( x => x.DistanceSquared <= PickupRadius * PickupRadius )
-					.OrderBy( x => x.DistanceSquared )
-					.Select( x => x.Item );
-		return item.FirstOrDefault();
-
 	}
 
 	private PickupItem RaycastForPickup()
 	{
-		var camera = GetCamera();
-		if ( camera is null )
+		if ( _camera is null )
 			return null;
 
-		var ray = new Ray( camera.WorldPosition, camera.WorldRotation.Forward );
+		var ray = new Ray( _camera.WorldPosition, _camera.WorldRotation.Forward );
 		var trace = Scene.Trace.Ray( ray, 100f )
-			.IgnoreGameObjectHierarchy( camera.GameObject.Parent )
+			.IgnoreGameObjectHierarchy( _camera.GameObject.Parent )
 			.Run();
-
-		// debugging
-		// DebugOverlay.Trace( trace, duration: 1f );
 
 		if ( !trace.Hit || trace.GameObject is null )
 			return null;
@@ -133,9 +114,9 @@ public sealed class PlayerPickupController : Component
 
 	private PickupItem NearestToSphere()
 	{
-		var pickupCenter = GetPickupCenterWorld();
+		var pickupCenter = _camera.WorldPosition;
 		var pickupRadiusSquared = PickupRadius * PickupRadius;
-		var forward = WorldRotation.Forward;
+		var forward = _camera.WorldRotation.Forward;
 
 		PickupItem bestItem = null;
 		var bestDistanceSquared = float.MaxValue;
@@ -191,37 +172,6 @@ public sealed class PlayerPickupController : Component
 	{
 		return RaycastForPickup();
 	}
-
-
-	private void UpdateHeldItemTransform()
-	{
-		if ( heldItem?.GameObject is null )
-		{
-			heldItem = null;
-			return;
-		}
-	}
-
-	private void AttachHeldItem()
-	{
-		var spring = GetComponentInParent<SpringJoint>( includeDisabled: true );
-		if ( spring is not null )
-		{
-			spring.Enabled = true;
-			spring.AnchorBody = heldItem.GameObject;
-			return;
-		}
-	}
-
-	private Vector3 GetPickupCenterWorld()
-	{
-		var camera = GetCamera();
-		if ( camera is null )
-			return Vector3.Zero;
-
-		return camera.WorldPosition;
-	}
-
 
 	private bool IsOwnedByPlayer( PickupItem candidate )
 	{

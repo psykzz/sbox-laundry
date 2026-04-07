@@ -51,6 +51,13 @@ public sealed class PickupItem : Component
 		}
 	}
 
+	public void Throw( Vector3 velocity )
+	{
+		Drop();
+		if ( rigidbody is not null )
+			rigidbody.Velocity = velocity;
+	}
+
 	public bool IsHeld()
 	{
 		return beingHeldBy is not null;
