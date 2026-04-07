@@ -29,6 +29,7 @@
       "VR": false,
       "Gamepad": true
     },
-    "SystemScene": "scenes/systems.scene"
+    "SystemScene": "scenes/systems.scene",
+    "StartupScene": "scenes/game.scene"
   }
 }

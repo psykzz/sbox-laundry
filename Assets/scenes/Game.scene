@@ -1147,13 +1147,13 @@
           "Reflections": false,
           "Repeat": false,
           "SoundEvent": "sounds/electric_loop.sound",
-          "SoundOverride": false,
+          "SoundOverride": true,
           "StopOnNew": false,
           "TargetMixer": {
             "Name": "game",
             "Id": "9e83cc01-7bd5-4f9c-9664-b2d9aeb16dc2"
           },
-          "Volume": 1
+          "Volume": 0.25
         }
       ],
       "Children": [
@@ -1251,6 +1251,38 @@
               "__guid": "6a125e27-1b5e-4c19-8343-99e80ae493f1",
               "__enabled": true,
               "Flags": 0,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null
+            },
+            {
+              "__type": "WasherButton",
+              "__guid": "da4563bc-c5e0-4d42-83ef-e3448f6e1175",
+              "__enabled": true,
+              "Flags": 0,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "WashingMachine": {
+                "_type": "component",
+                "component_id": "7deae418-86fb-4ef2-8623-759d93556d54",
+                "go": "3ac880ba-bd33-4c40-a3c4-367fbc8e98c8",
+                "component_type": "Washer"
+              }
+            },
+            {
+              "__type": "Usable",
+              "__guid": "bf96546d-67d6-43e8-894b-707e294d366f",
+              "__enabled": true,
+              "Flags": 0,
+              "Action": "use",
+              "HintText": "Use",
               "OnComponentDestroy": null,
               "OnComponentDisabled": null,
               "OnComponentEnabled": null,
