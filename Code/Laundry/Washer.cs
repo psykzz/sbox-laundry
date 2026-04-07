@@ -10,6 +10,7 @@ public sealed class Washer : Component, Component.ICollisionListener
 	public GameObject StartWashButton { get; private set; }
 
 	private TimeUntil _finishWash;
+	public bool IsRunning => _finishWash.Fraction < 1f;
 
 	[Property]
 	public Collider WashingArea { get; private set; }
@@ -44,6 +45,7 @@ public sealed class Washer : Component, Component.ICollisionListener
 		}
 		else
 		{
+			WashingSound?.StopSound();
 			Shake();
 		}
 	}
@@ -77,11 +79,12 @@ public sealed class Washer : Component, Component.ICollisionListener
 	}
 	public bool StartWash()
 	{
-		if ( Clothing.Count == 0 || CurrentDetergent is null )
-		{
-			Error( true );
-			return false;
-		}
+		// todo: FIX detergent
+		// if ( Clothing.Count == 0 || CurrentDetergent is null )
+		// {
+		// 	Error( true );
+		// 	return false;
+		// }
 
 		WashingSound?.StartSound();
 		_finishWash = WashingDuration;

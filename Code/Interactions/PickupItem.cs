@@ -11,12 +11,15 @@ public sealed class PickupItem : Component
 	#region Component Lifecycle
 	protected override void OnStart()
 	{
-		rigidbody = GameObject.Components.Get<Rigidbody>( FindMode.InSelf | FindMode.InAncestors );
+		rigidbody = Components.Get<Rigidbody>( FindMode.InSelf | FindMode.InAncestors );
 		if ( rigidbody is null )
 			Log.Warning( $"PickupItem '{GameObject.Name}' does not have a Rigidbody component in its hierarchy. Pickup physics will not work." );
 
-
 		originalParent = GameObject.Parent;
+
+		var usable = Components.Get<Usable>( FindMode.InSelf );
+		if ( usable is not null )
+			usable.OnInteract += ( interactor ) => PickUp( interactor );
 	}
 
 	#endregion

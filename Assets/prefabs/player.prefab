@@ -553,7 +553,7 @@
             "OwnerTransfer": 1,
             "Components": [
               {
-                "__type": "PlayerPickupController",
+                "__type": "PlayerInteractionController",
                 "__guid": "15b35473-3386-4713-9560-bfe835428661",
                 "__enabled": true,
                 "Flags": 0,
@@ -563,8 +563,6 @@
                 "OnComponentFixedUpdate": null,
                 "OnComponentStart": null,
                 "OnComponentUpdate": null,
-                "PickupAction": "Attack1",
-                "PickupRadius": 30,
                 "PunchAction": "Attack2",
                 "PunchAmount": 15
               }

@@ -159,6 +159,20 @@
         "OnComponentFixedUpdate": null,
         "OnComponentStart": null,
         "OnComponentUpdate": null
+      },
+      {
+        "__type": "Usable",
+        "__guid": "1786a719-feb7-4b8a-bbc7-3669a26b26a9",
+        "__enabled": true,
+        "Flags": 0,
+        "Action": "Attack1",
+        "HintText": "Pickup",
+        "OnComponentDestroy": null,
+        "OnComponentDisabled": null,
+        "OnComponentEnabled": null,
+        "OnComponentFixedUpdate": null,
+        "OnComponentStart": null,
+        "OnComponentUpdate": null
       }
     ],
     "Children": [],

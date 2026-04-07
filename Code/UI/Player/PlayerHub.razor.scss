@@ -5,11 +5,6 @@ PlayerHub
 	left: 0;
 	right: 0;
 	bottom: 0;
-	// background-color: #444;
-	// justify-content: center;
-	// align-items: center;
-	// font-weight: bold;
-	// border-radius: 20px;
 
 	> .score
 	{
@@ -28,20 +23,7 @@ PlayerHub
 		color: #fff;
 	}
 
-	// > .crosshair
-	// {
-	// 	position: absolute;
-	// 	top: 50%;
-	// 	left: 50%;
-	// 	transform: translate(-50%, -50%);
-
-	// 	width: 32px;
-	// 	height: 32px;
-	// 	background-image: url(assets/crosshair.png);
-	// 	background-size: cover;
-	// }
 	> .crosshair {
-  	/* Positioning it in the center of the screen */
 		position: absolute;
 		top: 50%;
 		left: 50%;
