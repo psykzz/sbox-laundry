@@ -1281,8 +1281,46 @@
               "__guid": "bf96546d-67d6-43e8-894b-707e294d366f",
               "__enabled": true,
               "Flags": 0,
-              "Action": "use",
-              "HintText": "Use",
+              "Action": "Use",
+              "HintText": "Start washer",
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "ShowInteractionHint": true
+            },
+            {
+              "__type": "Sandbox.WorldPanel",
+              "__guid": "e323b696-7453-42b8-b689-7ba7bee4f50b",
+              "__enabled": true,
+              "Flags": 0,
+              "HorizontalAlign": "Left",
+              "InteractionRange": 1000,
+              "LookAtCamera": true,
+              "OnComponentDestroy": null,
+              "OnComponentDisabled": null,
+              "OnComponentEnabled": null,
+              "OnComponentFixedUpdate": null,
+              "OnComponentStart": null,
+              "OnComponentUpdate": null,
+              "PanelSize": "500,250",
+              "RenderOptions": {
+                "GameLayer": false,
+                "OverlayLayer": true,
+                "BloomLayer": false,
+                "AfterUILayer": false
+              },
+              "RenderScale": 0.25,
+              "VerticalAlign": "Bottom"
+            },
+            {
+              "__type": "Sandbox.InteractionHUD",
+              "__guid": "9f7e6f2f-64b7-46a8-a4a4-e8d26d639dc2",
+              "__enabled": true,
+              "Flags": 0,
+              "HintText": "Interact",
               "OnComponentDestroy": null,
               "OnComponentDisabled": null,
               "OnComponentEnabled": null,
@@ -1315,6 +1353,11 @@
       "CustomBounds": false
     },
     "GameObjectSystems": {
+      "Sandbox.Clutter.ClutterGridSystem": {
+        "Storage": {
+          "$blob": "10e8607d-3ad6-4a34-bf35-4bf411e28576"
+        }
+      },
       "Sandbox.MovieMaker.MovieRecorderSystem": {
         "DisableClientRecording": false
       }

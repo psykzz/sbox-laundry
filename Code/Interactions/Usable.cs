@@ -6,7 +6,10 @@ using System;
 public sealed class Usable : Component
 {
 	[Property, InputAction]
-	public string Action { get; set; } = "use";
+	public string Action;
+
+	[Property]
+	public bool ShowInteractionHint { get; set; } = false;
 
 	[Property]
 	public string HintText { get; set; } = "Use";

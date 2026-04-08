@@ -1,0 +1,27 @@
+@using Sandbox;
+@using Sandbox.UI;
+@inherits PanelComponent
+@namespace Sandbox
+
+<root>
+	<div class="popup">
+		<div class="hint">( @(Input.GetButtonOrigin(ActionKey)) ) <div class='hint-text'>@HintText</div>
+		</div>
+	</div>
+</root>
+
+@code
+{
+
+	public string ActionKey { get; set; } = "use";
+
+	/// <summary>
+	/// The descriptive hint shown next to the key badge, e.g. "Insert cloths to start washing".
+	/// </summary>
+	[Property, TextArea] public string HintText { get; set; } = "Interact";
+
+	/// <summary>
+	/// The hash determines if the panel should be rebuilt. If it changes, it will be rebuilt.
+	/// </summary>
+	protected override int BuildHash() => System.HashCode.Combine(HintText, ActionKey);
+}

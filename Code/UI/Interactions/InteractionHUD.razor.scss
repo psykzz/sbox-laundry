@@ -1,0 +1,40 @@
+InteractionHUD
+{
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+
+
+	.popup
+	{
+		position: absolute;
+		left: 5px;
+		bottom: 5px;
+
+		/* grows to fit any text length; caps at 250px before wrapping */
+		max-width: 500px;
+
+		background-color: rgba(0, 0, 0, 0.75);
+		border-radius: 100%;
+		padding: 8px 14px;
+	}
+
+
+	.hint
+	{
+		font-family: Poppins;
+		font-size: 4em;
+		font-weight: 500;
+		color: #ffffff;
+
+		/* allow long hints like "Insert cloths to start washing" to wrap */
+		white-space: normal;
+
+		.hint-text {
+			margin-left: 20px;
+			font-weight: 200;
+		}
+	}
+}
