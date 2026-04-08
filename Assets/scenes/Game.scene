@@ -50,6 +50,27 @@
                     },
                     "Property": "Position",
                     "Value": "0,0,345.5732"
+                  },
+                  {
+                    "Target": {
+                      "Type": "Component",
+                      "IdValue": "5d4cefb4-36c3-4afd-8760-d49278fd3c19"
+                    },
+                    "Property": "nextSpawn",
+                    "Value": {
+                      "Absolute": 0,
+                      "Relative": -5202.943,
+                      "Passed": 5202.943,
+                      "Fraction": 1
+                    }
+                  },
+                  {
+                    "Target": {
+                      "Type": "Component",
+                      "IdValue": "5d4cefb4-36c3-4afd-8760-d49278fd3c19"
+                    },
+                    "Property": "SpawnInterval",
+                    "Value": 60
                   }
                 ],
                 "MovedObjects": []
@@ -963,7 +984,7 @@
       "__version": 2,
       "Flags": 0,
       "Name": "washing_machine",
-      "Position": "-447.4941,410.0201,-0.9990921",
+      "Position": "-447.4941,344.7503,-0.9990921",
       "Rotation": "0,0,0,1",
       "Scale": "2,2,2",
       "Tags": "",
@@ -1052,7 +1073,10 @@
           "__guid": "7deae418-86fb-4ef2-8623-759d93556d54",
           "__enabled": true,
           "Flags": 0,
-          "Clothing": [],
+          "DisableAreaDuration": 3,
+          "EjectDoorOffset": 30,
+          "EjectForce": 300,
+          "EjectStaggerDelay": 0.3,
           "MaxClothingItems": 5,
           "OnComponentDestroy": null,
           "OnComponentDisabled": null,
@@ -1065,13 +1089,14 @@
             "_type": "gameobject",
             "go": "d5e1514f-6c4b-4069-a2cc-848048293953"
           },
+          "StoredClothing": [],
           "WashingArea": {
             "_type": "component",
             "component_id": "9a376c22-b16c-4ddd-b3d0-3ecaf5584245",
             "go": "3ac880ba-bd33-4c40-a3c4-367fbc8e98c8",
             "component_type": "BoxCollider"
           },
-          "WashingDuration": 10,
+          "WashingDuration": 3,
           "WashingSound": {
             "_type": "component",
             "component_id": "d1ce0fa4-a2c9-403a-8622-1ece359a1c64",
@@ -1084,7 +1109,7 @@
           "__guid": "9a376c22-b16c-4ddd-b3d0-3ecaf5584245",
           "__enabled": true,
           "Flags": 0,
-          "Center": "15.79861,0.193922,19.30461",
+          "Center": "16,0,20",
           "ColliderFlags": 0,
           "Elasticity": null,
           "Friction": null,
@@ -1100,7 +1125,7 @@
           "OnTriggerEnter": null,
           "OnTriggerExit": null,
           "RollingResistance": null,
-          "Scale": "6.820225,17.4733,17.12669",
+          "Scale": "4,20,20",
           "Static": false,
           "Surface": null,
           "SurfaceVelocity": "0,0,0"
@@ -1294,7 +1319,7 @@
             {
               "__type": "Sandbox.WorldPanel",
               "__guid": "e323b696-7453-42b8-b689-7ba7bee4f50b",
-              "__enabled": true,
+              "__enabled": false,
               "Flags": 0,
               "HorizontalAlign": "Left",
               "InteractionRange": 1000,
@@ -1318,7 +1343,7 @@
             {
               "__type": "Sandbox.InteractionHUD",
               "__guid": "9f7e6f2f-64b7-46a8-a4a4-e8d26d639dc2",
-              "__enabled": true,
+              "__enabled": false,
               "Flags": 0,
               "HintText": "Interact",
               "OnComponentDestroy": null,
@@ -1353,13 +1378,13 @@
       "CustomBounds": false
     },
     "GameObjectSystems": {
-      "Sandbox.Clutter.ClutterGridSystem": {
-        "Storage": {
-          "$blob": "10e8607d-3ad6-4a34-bf35-4bf411e28576"
-        }
-      },
       "Sandbox.MovieMaker.MovieRecorderSystem": {
         "DisableClientRecording": false
+      },
+      "Sandbox.Clutter.ClutterGridSystem": {
+        "Storage": {
+          "$blob": "1f9cbb5d-61a0-41dd-999e-76c6be73be60"
+        }
       }
     }
   },

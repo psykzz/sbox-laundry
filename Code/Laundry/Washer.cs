@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using Sandbox;
 using Sandbox.UI;
 
@@ -6,38 +7,68 @@ public sealed class Washer : Component, Component.ICollisionListener
 {
 
 
-	[Property]
+	[Property, Group( "Setup" )]
 	public GameObject StartWashButton { get; private set; }
 
 	private TimeUntil _finishWash;
 	public bool IsRunning => _finishWash.Fraction < 1f;
 
-	[Property]
+	[Property, Group( "Setup" )]
 	public Collider WashingArea { get; private set; }
 
-	[Property]
-	public List<GameObject> Clothing { get; private set; }
+	[Property, Group( "Internals" )]
+	public List<GameObject> StoredClothing { get; private set; }
 
 
 	public GameObject CurrentDetergent { get; private set; }
 
 
-	[Property]
+	[Property, Group( "Visuals" )]
 	public float ShakeAmount { get; set; } = 1f;
 
-	[Property]
+	[Property, Group( "Setup" )]
 	public float WashingDuration { get; set; } = 10f;
 
-	[Property]
+	[Property, Group( "Visuals" )]
 	public SoundPointComponent WashingSound { get; private set; }
 
 
-	[Property]
+	[Property, Group( "Setup" )]
 	public int MaxClothingItems { get; set; } = 5;
+
+	[Property, Group( "Eject" ), Title( "Eject Force" )]
+	public float EjectForce { get; set; } = 2500f;
+
+	[Property, Group( "Eject" ), Title( "Eject Stagger Delay" )]
+	public float EjectStaggerDelay { get; set; } = 0.3f;
+
+	[Property, Group( "Eject" ), Title( "Disable Area Duration" )]
+	public float DisableAreaDuration { get; set; } = 3f;
+
+	[Property, Group( "Eject" ), Title( "Eject Door Offset" )]
+	public float EjectDoorOffset { get; set; } = 30f;
+
+	private bool _wasRunning;
+	private TimeUntil _reenableArea;
+	private bool _areaDisabled;
+
+	private Vector3 _ejectPositon => WashingArea.LocalBounds.Center + WashingArea.WorldRotation.Forward * EjectDoorOffset;
+	private Vector3 _ejectDirection => (WashingArea.WorldRotation.Forward + Vector3.Up * 0.6f).Normal;
 
 
 	protected override void OnFixedUpdate()
 	{
+		if ( _wasRunning && !IsRunning )
+		{
+			_ = EjectClothing();
+		}
+
+		if ( _areaDisabled && _reenableArea )
+		{
+			WashingArea.Enabled = true;
+			_areaDisabled = false;
+		}
+
 		if ( !_finishWash )
 		{
 			var rotation = Math.Ceiling( Time.Now * 10 ) % 2 == 0 ? ShakeAmount : -ShakeAmount;
@@ -48,21 +79,28 @@ public sealed class Washer : Component, Component.ICollisionListener
 			WashingSound?.StopSound();
 			Shake();
 		}
+
+		_wasRunning = IsRunning;
 	}
 
 	public bool AddClothing( GameObject clothing )
 	{
-		if ( Clothing.Count >= MaxClothingItems )
+		if ( clothing.IsValid() == false )
+		{
+			Log.Warning( $"Attempted to add invalid clothing object to washer: {clothing}" );
+			return false;
+		}
+		if ( StoredClothing.Count >= MaxClothingItems )
 		{
 			Error();
 			return false;
 		}
 
 		clothing.GetComponent<PickupItem>()?.Drop();
-
-		Clothing.Add( clothing );
+		clothing.GetComponent<PickupItem>()?.PickUp( GameObject );
+		StoredClothing.Add( clothing );
 		clothing.WorldPosition = WashingArea.WorldPosition + Vector3.Up * -10f;
-		clothing.GetComponent<Prop>()?.Enabled = false;
+		clothing.Enabled = false;
 		return true;
 	}
 
@@ -80,7 +118,7 @@ public sealed class Washer : Component, Component.ICollisionListener
 	public bool StartWash()
 	{
 		// todo: FIX detergent
-		// if ( Clothing.Count == 0 || CurrentDetergent is null )
+		// if ( StoredClothing.Count == 0 || CurrentDetergent is null )
 		// {
 		// 	Error( true );
 		// 	return false;
@@ -101,11 +139,42 @@ public sealed class Washer : Component, Component.ICollisionListener
 	{
 		if ( collision.Self.Collider == WashingArea && collision.Other.GameObject.GetComponent<Washable>() is not null )
 		{
-			AddClothing( collision.Other.GameObject );
 			Log.Info( "Entered washing area" );
+			AddClothing( collision.Other.GameObject );
 		}
 	}
 
+
+	private async Task EjectClothing()
+	{
+		if ( WashingArea is not null )
+		{
+			WashingArea.Enabled = false;
+			_areaDisabled = true;
+			_reenableArea = DisableAreaDuration;
+		}
+
+
+		foreach ( var clothing in StoredClothing.ToList() )
+		{
+			if ( !clothing.IsValid() )
+				continue;
+
+			clothing.WorldPosition = Transform.World.PointToWorld( _ejectPositon );
+			// var prop = clothing.GetComponent<Prop>( includeDisabled: true );
+			// if ( prop is null ) Log.Warning( $"Clothing item ${clothing} is missing a Prop component, cannot eject properly." );
+
+			// if ( prop is not null ) prop.Enabled = true;
+			clothing.Enabled = true;
+			await clothing.GetComponent<PickupItem>()?.ResolveRigidBody();
+			clothing.GetComponent<PickupItem>()?.Throw( _ejectDirection, EjectForce );
+			// clothing.GetComponent<Rigidbody>()?.ApplyImpulse( _ejectDirection * EjectForce );
+
+			await Task.DelaySeconds( EjectStaggerDelay );
+		}
+
+		StoredClothing.Clear();
+	}
 
 	public void Shake( float rotation = 0f )
 	{
@@ -113,6 +182,15 @@ public sealed class Washer : Component, Component.ICollisionListener
 		var angle = washer.WorldRotation.Angles();
 		angle.roll = rotation;
 		washer.WorldRotation = angle.ToRotation();
+	}
+
+	protected override void DrawGizmos()
+	{
+		// Draw a forward arrow to show the eject direction in the editor
+		var localStart = _ejectPositon;
+		var localEnd = _ejectPositon + (_ejectDirection * 30f);
+
+		Gizmo.Draw.Arrow( localStart, localEnd );
 	}
 
 }

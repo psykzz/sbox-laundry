@@ -17,10 +17,10 @@ public sealed class WasherButton : Component
 
 	public bool CanInteract( GameObject _interactor )
 	{
-		Log.Warning( $"CanInteract check for washer button. WashingMachine valid: {WashingMachine.IsValid()}, IsRunning: {WashingMachine.IsRunning}, Clothing count: {WashingMachine.Clothing.Count()}" );
+		Log.Warning( $"CanInteract check for washer button. WashingMachine valid: {WashingMachine.IsValid()}, IsRunning: {WashingMachine.IsRunning}, Clothing count: {WashingMachine.StoredClothing.Count()}" );
 		return WashingMachine.IsValid()
 			&& !WashingMachine.IsRunning
-			&& WashingMachine.Clothing.Count() > 0;
+			&& WashingMachine.StoredClothing.Count() > 0;
 	}
 
 	public void OnButtonPress( GameObject interactor )

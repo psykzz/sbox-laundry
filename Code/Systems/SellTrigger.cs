@@ -17,7 +17,7 @@ public sealed class SellTrigger : Component, Component.ITriggerListener
 
 	public void OnTriggerEnter( Collider other )
 	{
-		Log.Warning( "Triggered!!" );
+		Log.Warning( "Sell Trigger" );
 
 		var pickupItem = other.GameObject.Components.Get<PickupItem>( FindMode.InSelf | FindMode.InAncestors );
 		if ( pickupItem is null )

@@ -1,12 +1,13 @@
+using System.Threading.Tasks;
 using Sandbox;
 
 public sealed class PickupItem : Component
 {
 	[Property]
 	public bool DisablePhysicsWhileHeld { get; set; } = true;
-	private GameObject beingHeldBy;
-	private Rigidbody rigidbody;
-	private GameObject originalParent;
+	[Property, Group( "Private" )] private GameObject beingHeldBy;
+	[Property, Group( "Private" )] private Rigidbody rigidbody;
+	[Property, Group( "Private" )] private GameObject originalParent;
 
 	#region Component Lifecycle
 	protected override void OnStart()
@@ -20,6 +21,26 @@ public sealed class PickupItem : Component
 		var usable = Components.Get<Usable>( FindMode.InSelf );
 		if ( usable is not null )
 			usable.OnInteract += ( interactor ) => PickUp( interactor );
+	}
+
+	protected override async void OnEnabled()
+	{
+		await ResolveRigidBody();
+	}
+
+	public async Task ResolveRigidBody()
+	{
+		while ( rigidbody is null || !rigidbody.IsValid() )
+		{
+			rigidbody = GameObject.GetComponent<Rigidbody>( true );
+			if ( rigidbody is not null && rigidbody.IsValid() )
+				break;
+
+			Log.Warning( $"PickupItem '{GameObject.Name}' is waiting for a valid Rigidbody component to be added to its GameObject." );
+			await GameTask.Delay( 1 );
+		}
+
+		Log.Warning( $"PickupItem '{GameObject.Name}' found a valid Rigidbody component." );
 	}
 
 	#endregion
@@ -45,20 +66,15 @@ public sealed class PickupItem : Component
 			return;
 
 		beingHeldBy = null;
-		var previousVelocity = rigidbody?.Velocity;
 		GameObject.SetParent( originalParent );
 		SetPhysicsHeldState( false );
-		if ( previousVelocity is not null )
-		{
-			rigidbody.Velocity = previousVelocity ?? Vector3.Zero;
-		}
 	}
 
-	public void Throw( Vector3 velocity )
+	public void Throw( Vector3 direction, float EjectForce = 10f )
 	{
 		Drop();
-		if ( rigidbody is not null )
-			rigidbody.Velocity = velocity;
+		rigidbody.ApplyImpulse( direction.Normal * EjectForce );
+
 	}
 
 	public bool IsHeld()

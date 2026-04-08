@@ -1,13 +1,14 @@
 using System;
 public sealed class Spawner : Component
 {
-	private float lastSpawnTime = 0f;
-
 	[Property]
 	public GameObject[] ItemsToSpawn { get; set; }
 
 	[Property, Range( 0.1f, 60f ), Step( 0.25f )]
 	public float SpawnInterval { get; set; } = 5f;
+
+	[Property]
+	private TimeUntil nextSpawn;
 
 	[Property]
 	public BoxCollider SpawnArea { get; private set; }
@@ -23,20 +24,19 @@ public sealed class Spawner : Component
 		{
 			Log.Warning( $"Spawner '{GameObject.Name}' does not have a BoxCollider assigned for SpawnArea. Spawning will use the Spawner's position as the spawn point." );
 		}
+
+		nextSpawn = Time.Now;
 	}
 
 	protected override void OnFixedUpdate()
 	{
-		if ( Time.Now > lastSpawnTime + SpawnInterval )
+		if ( nextSpawn )
 		{
 			var spawnPosition = GetRandomSpawnPoint();
 			var itemToSpawn = Random.Shared.FromArray( ItemsToSpawn, default );
-			var spawned = GameSystem.Instance.SpawnShirt( itemToSpawn, spawnPosition, Rotation.Random );
+			_ = GameSystem.Instance.SpawnShirt( itemToSpawn, spawnPosition, Rotation.Random );
 
-			// TODO: Not sure if we want to keep this or not.
-			// spawned.SetParent( GameObject );
-
-			lastSpawnTime = Time.Now;
+			nextSpawn = SpawnInterval;
 		}
 	}
 

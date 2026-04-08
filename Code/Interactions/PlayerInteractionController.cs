@@ -52,7 +52,8 @@ public sealed class PlayerInteractionController : Component
 		if ( !Input.Released( _heldAction ) )
 			return;
 
-		_heldItem.Drop();
+		if ( _heldItem.IsHeld() )
+			_heldItem.Drop();
 		_heldItem = null;
 		_heldAction = null;
 	}
