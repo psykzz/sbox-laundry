@@ -4,14 +4,25 @@
 @namespace Sandbox
 
 <root>
-	<div class="score">💰 @GameSystem.Instance.Money</div>
+	@if (RoundManager.Instance is not null)
+	{
+		<div class="round-timer">Round @RoundManager.Instance.Round &mdash; @FormatTime(RoundManager.Instance.TimeRemaining)</div>
+		<div class="score">⭐ @RoundManager.Instance.Score</div>
+	}
 	<div class="crosshair"></div>
 </root>
 
 @code
 {
-	/// <summary>
-	/// the hash determines if the system should be rebuilt. If it changes, it will be rebuilt
-	/// </summary>
-	protected override int BuildHash() => System.HashCode.Combine(GameSystem.Instance.Money);
+	string FormatTime(float seconds)
+	{
+		int m = (int)(seconds / 60f);
+		int s = (int)(seconds % 60f);
+		return $"{m:D2}:{s:D2}";
+	}
+
+	protected override int BuildHash() => System.HashCode.Combine(
+		RoundManager.Instance?.Score,
+		(int)(RoundManager.Instance?.TimeRemaining ?? 0f)
+	);
 }

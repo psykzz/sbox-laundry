@@ -24,7 +24,10 @@ public sealed class GameSystem : Component
 	{
 		var spawned = prefab.Clone( position, rotation );
 		spawned.NetworkSpawn();
-		spawned.GetComponent<Prop>()?.Tint = System.Random.Shared.FromList( TshirtColours, default );
+		var color = System.Random.Shared.FromList( TshirtColours, default );
+		var washable = spawned.GetComponent<WashableShirt>();
+		if ( washable is not null )
+			washable.ClothingColor = color;
 		return spawned;
 	}
 

@@ -1,7 +1,5 @@
 using System;
 using System.Threading.Tasks;
-using Sandbox;
-using Sandbox.UI;
 
 public sealed class Washer : Component, Component.ICollisionListener
 {
@@ -11,7 +9,7 @@ public sealed class Washer : Component, Component.ICollisionListener
 	public GameObject StartWashButton { get; private set; }
 
 	private TimeUntil _finishWash;
-	public bool IsRunning => _finishWash.Fraction < 1f;
+	public bool IsWashing => _finishWash.Fraction < 1f;
 
 	[Property, Group( "Setup" )]
 	public Collider WashingArea { get; private set; }
@@ -58,7 +56,16 @@ public sealed class Washer : Component, Component.ICollisionListener
 
 	protected override void OnFixedUpdate()
 	{
-		if ( _wasRunning && !IsRunning )
+		if ( IsWashing )
+		{
+			var breakdown = Components.Get<MachineBreakdown>( FindMode.InSelf );
+			if ( breakdown is null || !breakdown.IsBrokenDown )
+			{
+				breakdown?.TryBreakdown();
+			}
+		}
+
+		if ( _wasRunning && !IsWashing )
 		{
 			_ = EjectClothing();
 		}
@@ -69,7 +76,7 @@ public sealed class Washer : Component, Component.ICollisionListener
 			_areaDisabled = false;
 		}
 
-		if ( !_finishWash )
+		if ( IsWashing )
 		{
 			var rotation = Math.Ceiling( Time.Now * 10 ) % 2 == 0 ? ShakeAmount : -ShakeAmount;
 			Shake( rotation );
@@ -80,7 +87,7 @@ public sealed class Washer : Component, Component.ICollisionListener
 			Shake();
 		}
 
-		_wasRunning = IsRunning;
+		_wasRunning = IsWashing;
 	}
 
 	public bool AddClothing( GameObject clothing )
@@ -99,7 +106,6 @@ public sealed class Washer : Component, Component.ICollisionListener
 		clothing.GetComponent<PickupItem>()?.Drop();
 		clothing.GetComponent<PickupItem>()?.PickUp( GameObject );
 		StoredClothing.Add( clothing );
-		clothing.WorldPosition = WashingArea.WorldPosition + Vector3.Up * -10f;
 		clothing.Enabled = false;
 		return true;
 	}
@@ -112,17 +118,26 @@ public sealed class Washer : Component, Component.ICollisionListener
 			return false;
 		}
 
+		detergent.GetComponent<PickupItem>()?.Drop();
+		detergent.GetComponent<PickupItem>()?.PickUp( GameObject );
+		detergent.Enabled = false;
 		CurrentDetergent = detergent;
 		return true;
 	}
 	public bool StartWash()
 	{
-		// todo: FIX detergent
-		// if ( StoredClothing.Count == 0 || CurrentDetergent is null )
-		// {
-		// 	Error( true );
-		// 	return false;
-		// }
+		if ( StoredClothing.Count == 0 )
+		{
+			Error( true );
+			return false;
+		}
+
+		var breakdown = Components.Get<MachineBreakdown>( FindMode.InSelf );
+		if ( breakdown?.IsBrokenDown == true )
+		{
+			Error( true );
+			return false;
+		}
 
 		WashingSound?.StartSound();
 		_finishWash = WashingDuration;
@@ -137,16 +152,48 @@ public sealed class Washer : Component, Component.ICollisionListener
 
 	public void OnCollisionStart( Collision collision )
 	{
-		if ( collision.Self.Collider == WashingArea && collision.Other.GameObject.GetComponent<Washable>() is not null )
-		{
-			Log.Info( "Entered washing area" );
-			AddClothing( collision.Other.GameObject );
-		}
+		if ( collision.Self.Collider != WashingArea )
+			return;
+
+		var other = collision.Other.GameObject;
+
+		if ( other.GetComponent<Washable>() is not null )
+			AddClothing( other );
+		else if ( other.GetComponent<Detergent>() is not null )
+			AddDetergent( other );
 	}
 
 
+	private static bool IsWhiteColor( Color c ) => c.r > 0.9f && c.g > 0.9f && c.b > 0.9f;
+
 	private async Task EjectClothing()
 	{
+		// Color bleed: colored items tint white items washed in the same load
+		var washables = StoredClothing
+			.Where( c => c.IsValid() )
+			.Select( c => c.GetComponent<WashableShirt>() )
+			.Where( w => w is not null )
+			.ToList();
+
+		bool hasColoredItem = washables.Any( w => !IsWhiteColor( w.ClothingColor ) );
+		if ( hasColoredItem )
+		{
+			var dominantColor = washables.First( w => !IsWhiteColor( w.ClothingColor ) ).ClothingColor;
+			foreach ( var w in washables.Where( w => IsWhiteColor( w.ClothingColor ) ) )
+			{
+				var bleedColor = Color.Lerp( Color.White, dominantColor, 0.4f );
+				w.ClothingColor = bleedColor;
+				w.GameObject.GetComponent<Prop>()?.Tint = bleedColor;
+			}
+		}
+
+		// TODO: Wash() is not being called correctly — WashableShirt needs fixing, swap to Washable base class
+		// Apply wash result to each clothing item
+		bool hasDetergent = CurrentDetergent is not null;
+		foreach ( var clothing in StoredClothing.Where( c => c.IsValid() ) )
+			clothing.GetComponent<WashableShirt>()?.Wash( hasDetergent );
+		CurrentDetergent = null;
+
 		if ( WashingArea is not null )
 		{
 			WashingArea.Enabled = false;
@@ -154,22 +201,15 @@ public sealed class Washer : Component, Component.ICollisionListener
 			_reenableArea = DisableAreaDuration;
 		}
 
-
 		foreach ( var clothing in StoredClothing.ToList() )
 		{
 			if ( !clothing.IsValid() )
 				continue;
 
 			clothing.WorldPosition = Transform.World.PointToWorld( _ejectPositon );
-			// var prop = clothing.GetComponent<Prop>( includeDisabled: true );
-			// if ( prop is null ) Log.Warning( $"Clothing item ${clothing} is missing a Prop component, cannot eject properly." );
-
-			// if ( prop is not null ) prop.Enabled = true;
 			clothing.Enabled = true;
 			await clothing.GetComponent<PickupItem>()?.ResolveRigidBody();
 			clothing.GetComponent<PickupItem>()?.Throw( _ejectDirection, EjectForce );
-			// clothing.GetComponent<Rigidbody>()?.ApplyImpulse( _ejectDirection * EjectForce );
-
 			await Task.DelaySeconds( EjectStaggerDelay );
 		}
 

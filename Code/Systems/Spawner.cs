@@ -30,6 +30,9 @@ public sealed class Spawner : Component
 
 	protected override void OnFixedUpdate()
 	{
+		if ( RoundManager.Instance?.State != RoundState.Active )
+			return;
+
 		if ( nextSpawn )
 		{
 			var spawnPosition = GetRandomSpawnPoint();

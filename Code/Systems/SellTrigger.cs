@@ -17,14 +17,20 @@ public sealed class SellTrigger : Component, Component.ITriggerListener
 
 	public void OnTriggerEnter( Collider other )
 	{
-		Log.Warning( "Sell Trigger" );
-
 		var pickupItem = other.GameObject.Components.Get<PickupItem>( FindMode.InSelf | FindMode.InAncestors );
 		if ( pickupItem is null )
 			return;
 
+		var washable = pickupItem.GameObject.Components.Get<Washable>( FindMode.InSelf );
+		if ( washable is null || washable.State != LaundryState.Folded )
+		{
+			// Not fully processed — drop it back without scoring
+			pickupItem.Drop();
+			return;
+		}
+
 		pickupItem.Drop();
-		GameSystem.Instance.SellGib( pickupItem.GameObject );
+		RoundManager.Instance?.AddScore( 1 );
 		pickupItem.GameObject.Destroy();
 	}
 }

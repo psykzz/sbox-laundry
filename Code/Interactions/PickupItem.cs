@@ -9,6 +9,8 @@ public sealed class PickupItem : Component
 	[Property, Group( "Private" )] private Rigidbody rigidbody;
 	[Property, Group( "Private" )] private GameObject originalParent;
 
+	private Usable _usable;
+
 	#region Component Lifecycle
 	protected override void OnStart()
 	{
@@ -18,9 +20,9 @@ public sealed class PickupItem : Component
 
 		originalParent = GameObject.Parent;
 
-		var usable = Components.Get<Usable>( FindMode.InSelf );
-		if ( usable is not null )
-			usable.OnInteract += ( interactor ) => PickUp( interactor );
+		_usable = Components.Get<Usable>( FindMode.InSelf );
+		if ( _usable is not null )
+			_usable.OnInteract += ( interactor ) => PickUp( interactor );
 	}
 
 	protected override async void OnEnabled()

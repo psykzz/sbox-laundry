@@ -5,7 +5,7 @@
       "__guid": "62f3e8da-eadf-49e8-9896-0a02d98b2a02",
       "__version": 2,
       "Flags": 0,
-      "Name": "GameSystem",
+      "Name": "Root Systems",
       "Position": "0,0,100",
       "Rotation": "0,0,0,1",
       "Scale": "1,1,1",
@@ -37,8 +37,42 @@
             "0.53488,0.53488,0.53488,1",
             "1,1,1,1"
           ]
+        },
+        {
+          "__type": "RoundManager",
+          "__guid": "ece0ee42-47ec-423b-85ae-1e23b940237a",
+          "__enabled": true,
+          "Flags": 0,
+          "OnComponentDestroy": null,
+          "OnComponentDisabled": null,
+          "OnComponentEnabled": null,
+          "OnComponentFixedUpdate": null,
+          "OnComponentStart": null,
+          "OnComponentUpdate": null,
+          "Round": 0,
+          "RoundDuration": 300,
+          "Score": 0,
+          "State": "Waiting"
         }
       ],
+      "Children": []
+    },
+    {
+      "__guid": "a25f56cf-29b7-42de-b9e1-d12a1ea6d7b7",
+      "__version": 2,
+      "Flags": 0,
+      "Name": "Player List",
+      "Position": "0,0,100",
+      "Rotation": "0,0,0,1",
+      "Scale": "1,1,1",
+      "Tags": "",
+      "Enabled": true,
+      "NetworkMode": 2,
+      "NetworkFlags": 0,
+      "NetworkOrphaned": 0,
+      "NetworkTransmit": true,
+      "OwnerTransfer": 1,
+      "Components": [],
       "Children": []
     }
   ],
@@ -66,7 +100,7 @@
       },
       "Sandbox.Clutter.ClutterGridSystem": {
         "Storage": {
-          "$blob": "d78c22d0-90fb-4cb0-a0b0-b6f5b6e62985"
+          "$blob": "a65d92d9-a93e-4f57-98a1-30263b9aa708"
         }
       }
     }
