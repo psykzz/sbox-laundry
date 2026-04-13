@@ -48,7 +48,7 @@ public sealed class IroningStation : Component, Component.ICollisionListener
 	{
 		if ( IsIroning )
 		{
-			var breakdown = Components.Get<MachineBreakdown>( FindMode.InSelf );
+			var breakdown = Components.Get<Machine>( FindMode.InSelf );
 			if ( breakdown is null || !breakdown.IsBrokenDown )
 			{
 				breakdown?.TryBreakdown();
@@ -98,7 +98,7 @@ public sealed class IroningStation : Component, Component.ICollisionListener
 
 	public bool StartIron()
 	{
-		var breakdown = Components.Get<MachineBreakdown>( FindMode.InSelf );
+		var breakdown = Components.Get<Machine>( FindMode.InSelf );
 		if ( breakdown?.IsBrokenDown == true )
 		{
 			Sound.Play( "beep", GameObject.WorldPosition );

@@ -1,7 +1,7 @@
 using System;
 using System.Threading.Tasks;
 
-public sealed class Washer : Component, Component.ICollisionListener
+public sealed class Washer : Machine, Component.ICollisionListener
 {
 
 
@@ -58,10 +58,9 @@ public sealed class Washer : Component, Component.ICollisionListener
 	{
 		if ( IsWashing )
 		{
-			var breakdown = Components.Get<MachineBreakdown>( FindMode.InSelf );
-			if ( breakdown is null || !breakdown.IsBrokenDown )
+			if ( !IsBrokenDown )
 			{
-				breakdown?.TryBreakdown();
+				TryBreakdown();
 			}
 		}
 
@@ -132,8 +131,7 @@ public sealed class Washer : Component, Component.ICollisionListener
 			return false;
 		}
 
-		var breakdown = Components.Get<MachineBreakdown>( FindMode.InSelf );
-		if ( breakdown?.IsBrokenDown == true )
+		if ( IsBrokenDown )
 		{
 			Error( true );
 			return false;

@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 namespace Sandbox;
 
 /// <summary>
@@ -19,30 +20,27 @@ public sealed class CustomNetworkHelper : Component, Component.INetworkListener
 	/// </summary>
 	[Property] public GameObject PlayerPrefab { get; set; }
 
-	/// <summary>
-	/// A list of points to choose from randomly to spawn the player in. If not set, we'll spawn at the
-	/// location of the CustomNetworkHelper object.
-	/// </summary>
-	[Property] public List<GameObject> SpawnPoints { get; set; }
+	protected override async Task OnLoad()
+	{
+		if ( Scene.IsEditor )
+			return;
 
-	// protected override async Task OnLoad()
-	// {
-	// 	if ( Scene.IsEditor )
-	// 		return;
+		if ( StartServer && !Networking.IsActive )
+		{
+			LoadingScreen.Subtitle = "Creating Lobby";
+			await Task.DelayRealtimeSeconds( 0.1f );
+			Networking.CreateLobby( new() );
+		}
+	}
 
-	// 	if ( StartServer && !Networking.IsActive )
-	// 	{
-	// 		LoadingScreen.Subtitle = "Creating Lobby";
-	// 		await Task.DelayRealtimeSeconds( 0.1f );
-	// 		Networking.CreateLobby( new() );
-	// 	}
-	// }
+
 
 	/// <summary>
 	/// A client is fully connected to the server. This is called on the host.
 	/// </summary>
 	public void OnActive( Connection channel )
 	{
+
 		Log.Info( $"Player '{channel.DisplayName}' has joined the game" );
 
 		if ( !PlayerPrefab.IsValid() )
@@ -64,14 +62,6 @@ public sealed class CustomNetworkHelper : Component, Component.INetworkListener
 	/// </summary>
 	Transform FindSpawnLocation()
 	{
-		//
-		// If they have spawn point set then use those
-		//
-		if ( SpawnPoints is not null && SpawnPoints.Count > 0 )
-		{
-			return Random.Shared.FromList( SpawnPoints, default ).WorldTransform;
-		}
-
 		//
 		// If we have any SpawnPoint components in the scene, then use those
 		//

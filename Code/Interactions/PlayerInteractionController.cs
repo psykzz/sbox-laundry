@@ -16,9 +16,11 @@ public sealed class PlayerInteractionController : Component
 
 	protected override void OnStart()
 	{
-		_camera = GetComponentInParent<CameraComponent>();
+		_camera = GetComponentInParent<CameraComponent>( true );
 		if ( _camera is null )
 			Log.Error( "PlayerInteractionController requires a CameraComponent in its parent hierarchy." );
+
+		_camera.Enabled = !IsProxy;
 	}
 
 	protected override void OnUpdate()

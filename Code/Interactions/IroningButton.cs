@@ -22,7 +22,7 @@ public sealed class IroningButton : Component
 		if ( _usable is null || !IroningStation.IsValid() )
 			return;
 
-		var breakdown = IroningStation.Components.Get<MachineBreakdown>( FindMode.InSelf );
+		var breakdown = IroningStation.Components.Get<Machine>( FindMode.InSelf );
 		if ( breakdown?.IsBrokenDown == true )
 			_usable.HintText = "Repair Iron";
 		else if ( IroningStation.IsIroning )
@@ -38,7 +38,7 @@ public sealed class IroningButton : Component
 		if ( !IroningStation.IsValid() )
 			return false;
 
-		var breakdown = IroningStation.Components.Get<MachineBreakdown>( FindMode.InSelf );
+		var breakdown = IroningStation.Components.Get<Machine>( FindMode.InSelf );
 		if ( breakdown?.IsBrokenDown == true )
 			return true;
 
@@ -50,7 +50,7 @@ public sealed class IroningButton : Component
 		if ( !IroningStation.IsValid() )
 			return;
 
-		var breakdown = IroningStation.Components.Get<MachineBreakdown>( FindMode.InSelf );
+		var breakdown = IroningStation.Components.Get<Machine>( FindMode.InSelf );
 		if ( breakdown?.IsBrokenDown == true )
 		{
 			breakdown.Repair();

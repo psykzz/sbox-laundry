@@ -21,8 +21,7 @@ public sealed class WasherButton : Component
 		if ( _usable is null || !WashingMachine.IsValid() )
 			return;
 
-		var breakdown = WashingMachine.Components.Get<MachineBreakdown>( FindMode.InSelf );
-		if ( breakdown?.IsBrokenDown == true )
+		if ( WashingMachine.IsBrokenDown )
 			_usable.HintText = "Repair Machine";
 		else if ( WashingMachine.IsWashing )
 			_usable.HintText = $"Washing... ({WashingMachine.StoredClothing.Count}/{WashingMachine.MaxClothingItems})";
@@ -35,8 +34,7 @@ public sealed class WasherButton : Component
 		if ( !WashingMachine.IsValid() )
 			return false;
 
-		var breakdown = WashingMachine.Components.Get<MachineBreakdown>( FindMode.InSelf );
-		if ( breakdown?.IsBrokenDown == true )
+		if ( WashingMachine.IsBrokenDown )
 			return true;
 
 		return !WashingMachine.IsWashing && WashingMachine.StoredClothing.Count > 0;
@@ -47,10 +45,9 @@ public sealed class WasherButton : Component
 		if ( !WashingMachine.IsValid() )
 			return;
 
-		var breakdown = WashingMachine.Components.Get<MachineBreakdown>( FindMode.InSelf );
-		if ( breakdown?.IsBrokenDown == true )
+		if ( WashingMachine.IsBrokenDown )
 		{
-			breakdown.Repair();
+			WashingMachine.Repair();
 			return;
 		}
 
