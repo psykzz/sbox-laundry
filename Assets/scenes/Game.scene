@@ -59,8 +59,8 @@
                     "Property": "nextSpawn",
                     "Value": {
                       "Absolute": 0,
-                      "Relative": -4611.0938,
-                      "Passed": 4611.0938,
+                      "Relative": -2111.868,
+                      "Passed": 2111.868,
                       "Fraction": 1
                     }
                   },
@@ -1409,13 +1409,13 @@
       "CustomBounds": false
     },
     "GameObjectSystems": {
-      "Sandbox.MovieMaker.MovieRecorderSystem": {
-        "DisableClientRecording": false
-      },
       "Sandbox.Clutter.ClutterGridSystem": {
         "Storage": {
-          "$blob": "4841bff4-4baf-4430-a2ca-bb065136310b"
+          "$blob": "3b59d83c-ba8c-41a0-b733-7f7c6c851eed"
         }
+      },
+      "Sandbox.MovieMaker.MovieRecorderSystem": {
+        "DisableClientRecording": false
       }
     }
   },

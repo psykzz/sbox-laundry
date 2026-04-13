@@ -168,6 +168,14 @@ public sealed class Washer : Component, Component.ICollisionListener
 
 	private async Task EjectClothing()
 	{
+		BleedColours();
+		UpdateDirtiness();
+		DisableWashingArea();
+		await Eject();
+	}
+
+	private void BleedColours()
+	{
 		// Color bleed: colored items tint white items washed in the same load
 		var washables = StoredClothing
 			.Where( c => c.IsValid() )
@@ -176,22 +184,28 @@ public sealed class Washer : Component, Component.ICollisionListener
 			.ToList();
 
 		bool hasColoredItem = washables.Any( w => !IsWhiteColor( w.ClothingColor ) );
-		if ( hasColoredItem )
-		{
-			var dominantColor = washables.First( w => !IsWhiteColor( w.ClothingColor ) ).ClothingColor;
-			foreach ( var w in washables.Where( w => IsWhiteColor( w.ClothingColor ) ) )
-			{
-				var bleedColor = Color.Lerp( Color.White, dominantColor, 0.4f );
-				w.ClothingColor = bleedColor;
-				w.GameObject.GetComponent<Prop>()?.Tint = bleedColor;
-			}
-		}
+		if ( !hasColoredItem )
+			return;
 
-		// TODO: Wash() is not being called correctly — WashableShirt needs fixing, swap to Washable base class
-		// Apply wash result to each clothing item
+		var dominantColor = washables.First( w => !IsWhiteColor( w.ClothingColor ) ).ClothingColor;
+		foreach ( var w in washables.Where( w => IsWhiteColor( w.ClothingColor ) ) )
+		{
+			var bleedColor = Color.Lerp( Color.White, dominantColor, 0.4f );
+			w.ClothingColor = bleedColor;
+			w.GameObject.GetComponent<WashableShirt>()?.ClothingColor = bleedColor;
+		}
+	}
+
+	private void UpdateDirtiness()
+	{
+		// TODO: Wash() is not being called correctly
 		bool hasDetergent = CurrentDetergent is not null;
 		foreach ( var clothing in StoredClothing.Where( c => c.IsValid() ) )
 			clothing.GetComponent<WashableShirt>()?.Wash( hasDetergent );
+	}
+
+	private void DisableWashingArea()
+	{
 		CurrentDetergent = null;
 
 		if ( WashingArea is not null )
@@ -200,7 +214,10 @@ public sealed class Washer : Component, Component.ICollisionListener
 			_areaDisabled = true;
 			_reenableArea = DisableAreaDuration;
 		}
+	}
 
+	private async Task Eject()
+	{
 		foreach ( var clothing in StoredClothing.ToList() )
 		{
 			if ( !clothing.IsValid() )

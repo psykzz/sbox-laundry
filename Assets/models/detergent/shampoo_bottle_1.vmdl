@@ -76,7 +76,6 @@
 				[
 					{
 						_class = "PhysicsHullFromRender"
-						disabled = true
 						parent_bone = ""
 						surface_prop = "default"
 						collision_tags = "solid"
@@ -86,6 +85,7 @@
 					},
 					{
 						_class = "PhysicsMeshFromRender"
+						disabled = true
 						parent_bone = ""
 						surface_prop = "default"
 						collision_tags = "solid"
