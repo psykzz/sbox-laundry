@@ -6,18 +6,21 @@ public sealed class GameSystem : Component
 
 	public static GameSystem Instance { get; private set; }
 
-	[Property]
+	[Property, Sync]
 	public int Money { get; private set; } = 0;
 
 	[Property]
 	public List<Color> TshirtColours { get; set; }
 
-	private List<GameObject> _tshirts = new();
-
-
 	protected override void OnStart()
 	{
 		Instance = this;
+	}
+
+	protected override void OnDestroy()
+	{
+		if ( Instance == this )
+			Instance = null;
 	}
 
 	public Sandbox.GameObject SpawnShirt( GameObject prefab, Vector3 position, Rotation rotation )

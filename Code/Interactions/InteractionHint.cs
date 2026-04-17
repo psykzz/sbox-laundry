@@ -7,6 +7,7 @@ public sealed class InteractionHint : Component
 	private WorldPanel _worldPanel;
 	private InteractionHUD _hud;
 	private DebounceTimer _debouncer = new();
+	private Usable _usable;
 
 	protected override void OnStart()
 	{
@@ -17,8 +18,8 @@ public sealed class InteractionHint : Component
 			highlightOutline.Enabled = false;
 		}
 
-		var usable = GameObject.Components.Get<Usable>();
-		if ( !usable?.ShowInteractionHint ?? false )
+		_usable = GameObject.Components.Get<Usable>();
+		if ( !_usable?.ShowInteractionHint ?? false )
 			return;
 
 		_worldPanel = GameObject.Components.Get<WorldPanel>( FindMode.InSelf | FindMode.InAncestors );
@@ -52,13 +53,12 @@ public sealed class InteractionHint : Component
 			return;
 		}
 
-		var usable = GameObject.Components.Get<Usable>();
 		// Pull the latest hint text from the Usable on this object each frame highlight is called
-		if ( usable?.ShowInteractionHint ?? false && _hud is not null )
+		if ( (_usable?.ShowInteractionHint ?? false) && _hud is not null )
 		{
 			_worldPanel.Enabled = true;
-			_hud.ActionKey = usable?.Action;
-			_hud.HintText = usable?.HintText ?? _hud.HintText;
+			_hud.ActionKey = _usable?.Action;
+			_hud.HintText = _usable?.HintText ?? _hud.HintText;
 			_hud.Enabled = true;
 
 		}
@@ -69,7 +69,7 @@ public sealed class InteractionHint : Component
 		_debouncer.Run( "highlight", delay, () =>
 		{
 			highlightOutline.Enabled = false;
-			if ( usable?.ShowInteractionHint ?? false )
+			if ( _usable?.ShowInteractionHint ?? false )
 			{
 				_worldPanel.Enabled = false;
 				if ( _hud is not null ) _hud.Enabled = false;

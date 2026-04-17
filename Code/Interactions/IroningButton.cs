@@ -33,7 +33,7 @@ public sealed class IroningButton : Component
 			_usable.HintText = "Add washed clothing";
 	}
 
-	public bool CanInteract( GameObject _interactor )
+	private bool CanInteract( GameObject _interactor )
 	{
 		if ( !IroningStation.IsValid() )
 			return false;
@@ -45,7 +45,7 @@ public sealed class IroningButton : Component
 		return !IroningStation.IsIroning && IroningStation.StoredClothing.Count > 0;
 	}
 
-	public void OnButtonPress( GameObject interactor )
+	private void OnButtonPress( GameObject interactor )
 	{
 		if ( !IroningStation.IsValid() )
 			return;

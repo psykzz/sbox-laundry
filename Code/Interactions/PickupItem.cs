@@ -25,9 +25,9 @@ public sealed class PickupItem : Component
 			_usable.OnInteract += ( interactor ) => PickUp( interactor );
 	}
 
-	protected override async void OnEnabled()
+	protected override void OnEnabled()
 	{
-		await ResolveRigidBody();
+		_ = ResolveRigidBody();
 	}
 
 	public async Task ResolveRigidBody()
@@ -72,10 +72,10 @@ public sealed class PickupItem : Component
 		SetPhysicsHeldState( false );
 	}
 
-	public void Throw( Vector3 direction, float EjectForce = 10f )
+	public void Throw( Vector3 direction, float ejectForce = 10f )
 	{
 		Drop();
-		rigidbody.ApplyImpulse( direction.Normal * EjectForce );
+		rigidbody.ApplyImpulse( direction.Normal * ejectForce );
 
 	}
 

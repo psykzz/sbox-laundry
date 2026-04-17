@@ -30,7 +30,7 @@ public sealed class FoldingButton : Component
 			_usable.HintText = "Add ironed clothing";
 	}
 
-	public bool CanInteract( GameObject _interactor )
+	private bool CanInteract( GameObject _interactor )
 	{
 		if ( !FoldingStation.IsValid() )
 			return false;
@@ -38,7 +38,7 @@ public sealed class FoldingButton : Component
 		return !FoldingStation.IsFolding && FoldingStation.StoredClothing.Count > 0;
 	}
 
-	public void OnButtonPress( GameObject interactor )
+	private void OnButtonPress( GameObject interactor )
 	{
 		if ( !FoldingStation.IsValid() )
 			return;

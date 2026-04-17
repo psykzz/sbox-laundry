@@ -11,10 +11,10 @@ public enum LaundryState
 
 public class Washable : Component
 {
-	[Property, Range( 0f, 100f ), Step( 5f )]
+	[Property, Sync, Range( 0f, 100f ), Step( 5f )]
 	public float Dirtiness { get; set; } = 0f;
 
-	[Property]
+	[Property, Sync]
 	public LaundryState State { get; set; } = LaundryState.Dirty;
 
 	protected override void OnStart()
@@ -29,8 +29,6 @@ public class Washable : Component
 
 	public void Wash( bool useDetergent = false )
 	{
-
-		Log.Warning( "Washing item: " + GameObject.Name + $" (Dirtiness: {Dirtiness}, UseDetergent: {useDetergent})" );
 		if ( State != LaundryState.Dirty )
 			return;
 

@@ -1,5 +1,6 @@
 using Sandbox;
 
+[Title( "Washer Button" ), Category( "Laundry" )]
 public sealed class WasherButton : Component
 {
 	[Property] public Washer WashingMachine { get; set; }
@@ -29,7 +30,7 @@ public sealed class WasherButton : Component
 			_usable.HintText = $"Start Wash ({WashingMachine.StoredClothing.Count}/{WashingMachine.MaxClothingItems})";
 	}
 
-	public bool CanInteract( GameObject _interactor )
+	private bool CanInteract( GameObject _interactor )
 	{
 		if ( !WashingMachine.IsValid() )
 			return false;
@@ -40,7 +41,7 @@ public sealed class WasherButton : Component
 		return !WashingMachine.IsWashing && WashingMachine.StoredClothing.Count > 0;
 	}
 
-	public void OnButtonPress( GameObject interactor )
+	private void OnButtonPress( GameObject interactor )
 	{
 		if ( !WashingMachine.IsValid() )
 			return;

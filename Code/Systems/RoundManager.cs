@@ -15,13 +15,13 @@ public sealed class RoundManager : Component
 	[Property]
 	public float RoundDuration { get; set; } = 180f;
 
-	[Property]
+	[Property, Sync]
 	public int Score { get; private set; } = 0;
 
-	[Property]
+	[Property, Sync]
 	public int Round { get; private set; } = 0;
 
-	[Property]
+	[Property, Sync]
 	public RoundState State { get; private set; } = RoundState.Waiting;
 
 
@@ -32,6 +32,12 @@ public sealed class RoundManager : Component
 	{
 		Instance = this;
 		StartRound();
+	}
+
+	protected override void OnDestroy()
+	{
+		if ( Instance == this )
+			Instance = null;
 	}
 
 	protected override void OnFixedUpdate()

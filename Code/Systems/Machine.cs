@@ -7,6 +7,7 @@ public abstract class Machine : Component
 	[Property, Range( 0f, 2f ), Title( "Breakdowns Per Minute" )]
 	public float BreakdownChancePerMinute { get; set; } = 0.15f;
 
+	[Sync]
 	public bool IsBrokenDown { get; private set; } = false;
 
 	public event Action<GameObject> OnBreakdown;

@@ -25,6 +25,8 @@ public sealed class PlayerInteractionController : Component
 
 	protected override void OnUpdate()
 	{
+		if ( IsProxy ) return;
+
 		if ( _heldItem?.GameObject is null )
 		{
 			_heldItem = null;

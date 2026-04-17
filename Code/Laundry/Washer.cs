@@ -15,7 +15,7 @@ public sealed class Washer : Machine, Component.ICollisionListener
 	public Collider WashingArea { get; private set; }
 
 	[Property, Group( "Internals" )]
-	public List<GameObject> StoredClothing { get; private set; }
+	public List<GameObject> StoredClothing { get; private set; } = new();
 
 
 	public GameObject CurrentDetergent { get; private set; }
@@ -50,7 +50,7 @@ public sealed class Washer : Machine, Component.ICollisionListener
 	private TimeUntil _reenableArea;
 	private bool _areaDisabled;
 
-	private Vector3 _ejectPositon => WashingArea.LocalBounds.Center + WashingArea.WorldRotation.Forward * EjectDoorOffset;
+	private Vector3 _ejectPosition => WashingArea.LocalBounds.Center + WashingArea.WorldRotation.Forward * EjectDoorOffset;
 	private Vector3 _ejectDirection => (WashingArea.WorldRotation.Forward + Vector3.Up * 0.6f).Normal;
 
 
@@ -190,7 +190,6 @@ public sealed class Washer : Machine, Component.ICollisionListener
 		{
 			var bleedColor = Color.Lerp( Color.White, dominantColor, 0.4f );
 			w.ClothingColor = bleedColor;
-			w.GameObject.GetComponent<WashableShirt>()?.ClothingColor = bleedColor;
 		}
 	}
 
@@ -221,7 +220,7 @@ public sealed class Washer : Machine, Component.ICollisionListener
 			if ( !clothing.IsValid() )
 				continue;
 
-			clothing.WorldPosition = Transform.World.PointToWorld( _ejectPositon );
+			clothing.WorldPosition = Transform.World.PointToWorld( _ejectPosition );
 			clothing.Enabled = true;
 			await clothing.GetComponent<PickupItem>()?.ResolveRigidBody();
 			clothing.GetComponent<PickupItem>()?.Throw( _ejectDirection, EjectForce );
@@ -242,8 +241,8 @@ public sealed class Washer : Machine, Component.ICollisionListener
 	protected override void DrawGizmos()
 	{
 		// Draw a forward arrow to show the eject direction in the editor
-		var localStart = _ejectPositon;
-		var localEnd = _ejectPositon + (_ejectDirection * 30f);
+		var localStart = _ejectPosition;
+		var localEnd = _ejectPosition + (_ejectDirection * 30f);
 
 		Gizmo.Draw.Arrow( localStart, localEnd );
 	}
